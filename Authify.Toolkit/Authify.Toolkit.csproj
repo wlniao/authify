@@ -5,7 +5,7 @@
     <TargetFrameworks>netstandard2.1;netcoreapp3.1</TargetFrameworks>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard2.1' ">2.1.0</NetStandardImplicitPackageVersion>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">3.1.0</NetStandardImplicitPackageVersion>
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Wlniao.XCore" Version="3.1.6" />
+    <PackageReference Include="Wlniao.XCore" Version="3.1.7" />
   </ItemGroup>
 
 </Project>
