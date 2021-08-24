@@ -1,0 +1,12 @@
+﻿*.dg
+*.suo
+*.txt
+*.log
+*.user
+xcore.dev.config
+/.vs
+/*/obj
+/*/bin
+/*/Properties
+/Publish
+/*/avatar
