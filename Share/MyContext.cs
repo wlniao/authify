@@ -15,5 +15,6 @@ public class MyContext : DbContext
     }
     public DbSet<Auth> Auth { get; set; }
     public DbSet<Account> Account { get; set; }
+    public DbSet<AccessToken> AccessToken { get; set; }
     public DbSet<Organ> Organ { get; set; }
 }

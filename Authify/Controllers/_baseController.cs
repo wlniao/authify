@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Wlniao;
 
 /// <summary>
 /// 
@@ -22,10 +23,10 @@ public partial class baseController : Wlniao.XCoreController
     [NonAction]
     public IActionResult Context(Microsoft.AspNetCore.Http.HttpRequest req, MyContext db, Func<Cache.Context, IActionResult> func)
     {
-        var organ = db.Organ.Where(o => o.domain.Contains("," + req.Host.Host + ",")).OrderBy(o => o.domain.Length).FirstOrDefault();
+        var organ = db.Organ.Where(o => o.domain == req.Host.Host || o.domain.Contains("," + req.Host.Host + ",")).OrderBy(o => o.domain.Length).FirstOrDefault();
         if (organ == null)
         {
-            return Json(new { Program.node, success = false, message = "请使用您的专有域名访问本服务" });
+            return Json(new { node = XCore.WebNode, success = false, message = "请使用您的专有域名访问本服务" });
         }
         else
         {
@@ -36,7 +37,8 @@ public partial class baseController : Wlniao.XCoreController
                 ApiUrl = organ.apiurl,
                 Redirect = organ.backurl,
                 Timestamp = req.Query.ContainsKey("timestamp") ? Wlniao.Convert.ToLong(req.Query["timestamp"]) : 0,
-                Sign = req.Query.ContainsKey("sign") ? req.Query["sign"].ToString().ToLower() : ""
+                Sign = req.Query.ContainsKey("sign") ? req.Query["sign"].ToString().ToLower() : "",
+                Cfg = new Dictionary<string, string>()
             };
             if (!string.IsNullOrEmpty(organ.config))
             {

@@ -23,24 +23,24 @@ public class accountController : baseController
                 var sid = PostRequest("sid");
                 if (!ctx.Verify(body))
                 {
-                    return Json(new { Program.node, code = "402", success = false, message = "签名及请求时效性验证失败" });
+                    return Json(new { node = XCore.WebNode, code = "402", success = false, message = "签名及请求时效性验证失败" });
                 }
                 else if (string.IsNullOrEmpty(sid))
                 {
-                    return Json(new { Program.node, code = "501", success = false, message = "未指定要获取的用户Sid" });
+                    return Json(new { node = XCore.WebNode, code = "501", success = false, message = "未指定要获取的用户Sid" });
                 }
                 else
                 {
                     var row = db.Account.Where(o => o.sid == sid).FirstOrDefault();
                     if (row==null)
                     {
-                        return Json(new { Program.node, code = "501", success = false, message = "用户Sid无效，请重新指定" });
+                        return Json(new { node = XCore.WebNode, code = "501", success = false, message = "用户Sid无效，请重新指定" });
                     }
                     else
                     {
                         return Json(new
                         {
-                            Program.node,
+                            node = XCore.WebNode,
                             code = "0",
                             success = true,
                             message = "获取成功",
@@ -58,7 +58,7 @@ public class accountController : baseController
         }
         catch (Exception ex)
         {
-            return Json(new { Program.node, code = "-1", success = false, message = ex.Message });
+            return Json(new { node = XCore.WebNode, code = "-1", success = false, message = ex.Message });
         }
     }
     /// <summary>
@@ -79,22 +79,22 @@ public class accountController : baseController
                 var randpwd = PostRequest("randpwd");
                 if (!ctx.Verify(body))
                 {
-                    return Json(new { Program.node, code = "402", success = false, message = "签名及请求时效性验证失败" });
+                    return Json(new { node = XCore.WebNode, code = "402", success = false, message = "签名及请求时效性验证失败" });
                 }
                 else if (string.IsNullOrEmpty(mobile))
                 {
-                    return Json(new { Program.node, code = "501", success = false, message = "手机号获取失败" });
+                    return Json(new { node = XCore.WebNode, code = "501", success = false, message = "手机号获取失败" });
                 }
                 else if (!strUtil.IsMobile(mobile))
                 {
-                    return Json(new { Program.node, code = "502", success = false, message = "手机号格式无效" });
+                    return Json(new { node = XCore.WebNode, code = "502", success = false, message = "手机号格式无效" });
                 }
                 else if (string.IsNullOrEmpty(randpwd))
                 {
                     randpwd = Wlniao.Cache.Get("account_sendrandpwd_" + mobile);
                     if (!string.IsNullOrEmpty(randpwd))
                     {
-                        return Json(new { Program.node, code = "504", success = false, message = "随机密码发送太频繁，请稍后再试" });
+                        return Json(new { node = XCore.WebNode, code = "504", success = false, message = "随机密码发送太频繁，请稍后再试" });
                     }
                     else
                     {
@@ -113,11 +113,11 @@ public class accountController : baseController
                         {
                             Wlniao.Cache.Set("account_randpwd_" + mobile, randpwd, 600);
                             Wlniao.Cache.Set("account_sendrandpwd_" + mobile, randpwd, 60);
-                            return Json(new { Program.node, code = "0", success = true, message = "随机密码发送成功，十分钟内有效" });
+                            return Json(new { node = XCore.WebNode, code = "0", success = true, message = "随机密码发送成功，十分钟内有效" });
                         }
                         else
                         {
-                            return Json(new { Program.node, code = "500", success = false, message = "随机密码发送失败，短信网关错误" });
+                            return Json(new { node = XCore.WebNode, code = "500", success = false, message = "随机密码发送失败，短信网关错误" });
                         }
                     }
                 }
@@ -125,18 +125,18 @@ public class accountController : baseController
                 {
                     if (Wlniao.Cache.Set("account_randpwd_" + mobile, randpwd, 180))
                     {
-                        return Json(new { Program.node, code = "0", success = true, message = "随机密码提交成功" });
+                        return Json(new { node = XCore.WebNode, code = "0", success = true, message = "随机密码提交成功" });
                     }
                     else
                     {
-                        return Json(new { Program.node, code = "500", success = false, message = "提交失败，内部异常" });
+                        return Json(new { node = XCore.WebNode, code = "500", success = false, message = "提交失败，内部异常" });
                     }
                 }
             });
         }
         catch (Exception ex)
         {
-            return Json(new { Program.node, code = "-1", success = false, message = ex.Message });
+            return Json(new { node = XCore.WebNode, code = "-1", success = false, message = ex.Message });
         }
     }
     /// <summary>
@@ -154,30 +154,30 @@ public class accountController : baseController
                 var randpwd = PostRequest("randpwd");
                 if (!ctx.Verify(body))
                 {
-                    return Json(new { Program.node, code = "402", success = false, message = "签名及请求时效性验证失败" });
+                    return Json(new { node = XCore.WebNode, code = "402", success = false, message = "签名及请求时效性验证失败" });
                 }
                 else if (string.IsNullOrEmpty(mobile))
                 {
-                    return Json(new { Program.node, code = "501", success = false, message = "手机号获取失败" });
+                    return Json(new { node = XCore.WebNode, code = "501", success = false, message = "手机号获取失败" });
                 }
                 else if (!strUtil.IsMobile(mobile))
                 {
-                    return Json(new { Program.node, code = "502", success = false, message = "手机号格式无效" });
+                    return Json(new { node = XCore.WebNode, code = "502", success = false, message = "手机号格式无效" });
                 }
                 else
                 {
                     var sendrandpwd = Wlniao.Cache.Get("account_randpwd_" + mobile);
                     if (string.IsNullOrEmpty(sendrandpwd))
                     {
-                        return Json(new { Program.node, code = "503", success = false, message = "请先获取随机密码" });
+                        return Json(new { node = XCore.WebNode, code = "503", success = false, message = "请先获取随机密码" });
                     }
                     else if (string.IsNullOrEmpty(randpwd))
                     {
-                        return Json(new { Program.node, code = "504", success = false, message = "随机密码获取失败" });
+                        return Json(new { node = XCore.WebNode, code = "504", success = false, message = "随机密码获取失败" });
                     }
                     else if (randpwd != sendrandpwd)
                     {
-                        return Json(new { Program.node, code = "505", success = false, message = "随机密码错误" });
+                        return Json(new { node = XCore.WebNode, code = "505", success = false, message = "随机密码错误" });
                     }
                     else
                     {
@@ -189,14 +189,14 @@ public class accountController : baseController
                         account.lastlogin = DateTools.GetUnix();
                         db.Update(account);
                         db.SaveChangesAsync();
-                        return Json(new { Program.node, code = "0", success = true, message = "随机密码验证通过", data = account.sid });
+                        return Json(new { node = XCore.WebNode, code = "0", success = true, message = "随机密码验证通过", data = account.sid });
                     }
                 }
             });
         }
         catch (Exception ex)
         {
-            return Json(new { Program.node, code = "-1", success = false, message = ex.Message });
+            return Json(new { node = XCore.WebNode, code = "-1", success = false, message = ex.Message });
         }
 
     }

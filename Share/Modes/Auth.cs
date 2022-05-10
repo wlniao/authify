@@ -6,7 +6,7 @@ using Wlniao;
 namespace Models
 {
     /// <summary>
-    /// 收取信息
+    /// 授权信息
     /// </summary>
     [Table("authify_auth")]
     public class Auth
@@ -29,6 +29,10 @@ namespace Models
         /// </summary>
         [StringLength(50)]
         public string nickname { get; set; }
+        /// <summary>
+        /// 会话数据
+        /// </summary>
+        public string jsonstr { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>
